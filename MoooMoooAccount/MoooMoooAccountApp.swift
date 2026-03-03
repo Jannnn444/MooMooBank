@@ -11,7 +11,9 @@ import SwiftUI
 struct MoooMoooAccountApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            EntryView()
+            
+            // NOTE: Draw a milkcow pattern bkg
         }
     }
 }

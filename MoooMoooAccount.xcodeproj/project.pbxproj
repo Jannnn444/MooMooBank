@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1E682AD62F56ADEC009E4472 /* EntryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E682AD52F56ADEC009E4472 /* EntryView.swift */; };
+		1E682AD82F56C36D009E4472 /* EntryCalendar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E682AD72F56C36D009E4472 /* EntryCalendar.swift */; };
 		1E8591F62F3DAEB600E0F57D /* MoooMoooAccountApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8591F52F3DAEB600E0F57D /* MoooMoooAccountApp.swift */; };
 		1E8591F82F3DAEB600E0F57D /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1E8591F72F3DAEB600E0F57D /* ContentView.swift */; };
 		1E8591FA2F3DAEB800E0F57D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1E8591F92F3DAEB800E0F57D /* Assets.xcassets */; };
@@ -15,6 +17,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1E682AD52F56ADEC009E4472 /* EntryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryView.swift; sourceTree = "<group>"; };
+		1E682AD72F56C36D009E4472 /* EntryCalendar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntryCalendar.swift; sourceTree = "<group>"; };
 		1E8591F22F3DAEB600E0F57D /* MoooMoooAccount.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MoooMoooAccount.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1E8591F52F3DAEB600E0F57D /* MoooMoooAccountApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoooMoooAccountApp.swift; sourceTree = "<group>"; };
 		1E8591F72F3DAEB600E0F57D /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -58,6 +62,8 @@
 				1E8591F92F3DAEB800E0F57D /* Assets.xcassets */,
 				1E8591FB2F3DAEB800E0F57D /* Preview Content */,
 				1E9E5AAB2F3DB62000D20AFD /* Manager.swift */,
+				1E682AD52F56ADEC009E4472 /* EntryView.swift */,
+				1E682AD72F56C36D009E4472 /* EntryCalendar.swift */,
 			);
 			path = MoooMoooAccount;
 			sourceTree = "<group>";
@@ -143,6 +149,8 @@
 				1E9E5AAC2F3DB62000D20AFD /* Manager.swift in Sources */,
 				1E8591F82F3DAEB600E0F57D /* ContentView.swift in Sources */,
 				1E8591F62F3DAEB600E0F57D /* MoooMoooAccountApp.swift in Sources */,
+				1E682AD62F56ADEC009E4472 /* EntryView.swift in Sources */,
+				1E682AD82F56C36D009E4472 /* EntryCalendar.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
