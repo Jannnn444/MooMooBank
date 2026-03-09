@@ -181,7 +181,7 @@ struct EntryView: View {
 
             // MARK: - 2. Atoms layer
             if isAtomExploded {
-                GeometryReader { _ in
+                GeometryReader { geo in
                     ForEach(atoms) { atom in
                         AtomBubble(atom: atom) {
                             tapAtom(id: atom.id)
@@ -238,19 +238,32 @@ struct EntryView: View {
                         .font(.caption)
                         .transition(.opacity.combined(with: .scale))
                 }
-            }
-        }.ignoresSafeArea() //
-    } //
+            }.ignoresSafeArea()
+        }
+    }
 
     func spawnAtom() {
+        // CGFloat restricted area for atom-spawning
         isAtomExploded = true
+        let screen = UIScreen.main.bounds // full screen
         let atom = Atom(position: CGPoint(
-            x: CGFloat.random(in: 80...300),
-            y: CGFloat.random(in: 150...600)
+            x: CGFloat.random(in: 40...(screen.width - 40)),
+            y: CGFloat.random(in: 60...(screen.height - 60))
         ))
         withAnimation(.spring()) { atoms.append(atom) }
     }
 
+    /*
+     This is for area with safe area
+     
+     let atom = Atom(position: CGPoint(
+                x: CGFloat.random(in: 80...300),
+                y: CGFloat.random(in: 150...600)
+            ))
+     
+     */
+    
+    
     func tapAtom(id: UUID) {
         guard let index = atoms.firstIndex(where: { $0.id == id }) else { return }
         let oldLevel = atoms[index].level
