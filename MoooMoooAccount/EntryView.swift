@@ -155,8 +155,31 @@ struct EntryView: View {
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
+            
+            // MARK: - 1. Atom top-left counter reception
+            
+            VStack {
+                HStack {
+                    HStack(spacing: 6) {
+                        Circle().fill(.cyan).frame(width: 15, height: 15)
+                        
+                        Text("Atoms :\(atoms.count)")
+                            .font(.system(size: 12, weight: .semibold, design: .monospaced))
+                            .foregroundStyle(.white)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(.white.opacity(0.2))
+                    .clipShape(Capsule())
+                    .padding(.top, 56)
+                    .padding(.leading, 16)
+                    
+                    Spacer()
+                }
+                Spacer()
+            }
 
-            // Atoms layer
+            // MARK: - 2. Atoms layer
             if isAtomExploded {
                 GeometryReader { _ in
                     ForEach(atoms) { atom in
@@ -168,7 +191,7 @@ struct EntryView: View {
                 .ignoresSafeArea()
             }
 
-            // UI overlay
+            // MARK: - 3. UI overlay
             VStack(spacing: 16) {
                 Text("Fortune")
                     .foregroundStyle(.white)
@@ -216,8 +239,8 @@ struct EntryView: View {
                         .transition(.opacity.combined(with: .scale))
                 }
             }
-        }
-    }
+        }.ignoresSafeArea() //
+    } //
 
     func spawnAtom() {
         isAtomExploded = true
