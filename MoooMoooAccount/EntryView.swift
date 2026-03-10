@@ -151,6 +151,8 @@ struct EntryView: View {
     @State private var isAtomExploded: Bool = false
     @State private var toastMessage: String = ""
     @State private var showToast: Bool = false
+    
+    @State private var isShowLevelMenu: Bool = false
 
     var body: some View {
         ZStack {
@@ -193,51 +195,65 @@ struct EntryView: View {
 
             // MARK: - 3. UI overlay
             VStack(spacing: 16) {
-                Text("Fortune")
-                    .foregroundStyle(.white)
-                    .fontDesign(.monospaced)
-                    .font(.title2)
-
-                Button { spawnAtom() } label: {
-                    Image("coin")
-                        .resizable()
-                        .frame(width: 150, height: 150)
-                }
-
-                Divider().overlay(.gray)
-
-                Text("Tap atoms to grow · Coin to spawn")
-                    .foregroundStyle(.gray)
-                    .fontDesign(.monospaced)
-                    .font(.caption)
-
-                // Level legend
-                ScrollView(.horizontal, showsIndicators: false) {
-                    HStack(spacing: 12) {
-                        ForEach(levelConfigs, id: \.level) { config in
-                            VStack(spacing: 3) {
-                                Circle()
-                                    .fill(config.color)
-                                    .frame(width: 10, height: 10)
-                                Text("Lv\(config.level)")
-                                    .font(.system(size: 8, design: .monospaced))
-                                    .foregroundStyle(.gray)
-                                Text(config.tapsRequired == 0 ? "start" : "\(config.tapsRequired)t")
-                                    .font(.system(size: 7, design: .monospaced))
-                                    .foregroundStyle(.gray.opacity(0.6))
-                            }
-                        }
+               
+                    Text("Fortune")
+                        .foregroundStyle(.white)
+                        .fontDesign(.monospaced)
+                        .font(.title2)
+                    
+                    Button { spawnAtom() } label: {
+                        Image("coin")
+                            .resizable()
+                            .frame(width: 150, height: 150)
                     }
-                    .padding(.horizontal)
-                }
-
-                if showToast {
-                    Text(toastMessage)
-                        .foregroundStyle(.yellow)
+                                       
+                    Text("Tap atoms to grow · Coin to spawn")
+                        .foregroundStyle(.gray)
                         .fontDesign(.monospaced)
                         .font(.caption)
-                        .transition(.opacity.combined(with: .scale))
-                }
+                
+                    
+                    Button {
+                        isShowLevelMenu.toggle()
+                    } label: {
+                        Image("menu")
+                            .resizable()
+                            .frame(width: 15, height: 15)
+                    }.offset(x: 100)
+                    
+                    if isShowLevelMenu {
+                        // Level legend
+                        
+                        Divider().overlay(.gray)
+     
+                        ScrollView(.horizontal, showsIndicators: false) {
+                            HStack(spacing: 12) {
+                                ForEach(levelConfigs, id: \.level) { config in
+                                    VStack(spacing: 3) {
+                                        Circle()
+                                            .fill(config.color)
+                                            .frame(width: 10, height: 10)
+                                        Text("Lv\(config.level)")
+                                            .font(.system(size: 8, design: .monospaced))
+                                            .foregroundStyle(.gray)
+                                        Text(config.tapsRequired == 0 ? "start" : "\(config.tapsRequired)t")
+                                            .font(.system(size: 7, design: .monospaced))
+                                            .foregroundStyle(.gray.opacity(0.6))
+                                    }
+                                }
+                            }
+                            .padding(.horizontal)
+                        }
+                        
+                        if showToast {
+                            Text(toastMessage)
+                                .foregroundStyle(.yellow)
+                                .fontDesign(.monospaced)
+                                .font(.caption)
+                                .transition(.opacity.combined(with: .scale))
+                        }
+                    }
+                
             }.ignoresSafeArea()
         }
     }
