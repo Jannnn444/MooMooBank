@@ -201,7 +201,9 @@ struct EntryView: View {
                     .fontDesign(.monospaced)
                     .font(.title2)
                 
-                Button { spawnAtom() } label: {
+                Button {
+                    spawnAtom()
+                } label: {
                     Image("coin")
                         .resizable()
                         .frame(width: 150, height: 150)
