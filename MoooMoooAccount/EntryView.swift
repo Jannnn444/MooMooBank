@@ -252,16 +252,6 @@ struct EntryView: View {
         ))
         withAnimation(.spring()) { atoms.append(atom) }
     }
-
-    /*
-     This is for area with safe area
-     
-     let atom = Atom(position: CGPoint(
-                x: CGFloat.random(in: 80...300),
-                y: CGFloat.random(in: 150...600)
-            ))
-     
-     */
     
     
     func tapAtom(id: UUID) {
@@ -280,3 +270,66 @@ struct EntryView: View {
         }
     }
 }
+
+
+// spontaneuos help card -> CAUTION! This will really change your game totally
+// it's by chance to get help by alien?
+// a moomoo cow planet       (black and white)
+// a yogurt planet           (white vibe)
+// a demoniac ruling planet  (hell vibe)
+
+
+// NOTE:
+/*
+  1. The elements will be created:
+     Hydrogen (H): approximately 75%,
+     Helium (He): approximately 25%,
+     Lithium (Li): trace amounts (roughly one part in ten billion)
+ 
+  2. What's the first happening after the big bang
+ 
+ 
+ 建議的遊戲流程
+ 
+ 第一階段：Big Bang
+ 按下按鈕後，畫面全紅、爆炸特效，右下角溫度顯示極高數值（例如 10¹² K），畫面上飛散的是夸克粒子（小點點），無法被捕捉。
+ 第二階段：冷卻中
+ 畫面從紅→橘→黃，溫度數字持續下降，夸克開始自動聚合成 p（質子） 和 n（中子） 的符號，玩家還不能操作。
+ 第三階段：核合成視窗（黃金20秒）
+ ⭐ 這裡是玩家的互動時機！
+ 畫面出現倒數計時（例如5秒），玩家需要快速點擊或搖一搖，將 p 和 n 撞在一起，合成 He核。
+ 沒來得及配對的就剩下 H。
+ → 這樣玩家自然就會得到約 75% H、25% He 的結果，非常符合現實！
+ 第四階段：霧散、電漿冷卻
+ 畫面轉灰霧，溫度繼續下降，霧慢慢散開，飄著 H 和 He 的原子核符號。
+ 第五階段：38萬年後 — 原子誕生
+ 畫面一片星空，電子（e⁻）開始飄入，玩家再次搖一搖或點擊，讓電子被原子核捕獲，完成完整的 H atom 和 He atom。
+ 
+ 
+ 溫度計的設計建議
+ 溫度     顏色       狀態
+ 10¹²K   深紅      夸克混沌
+ 10¹⁰K   橘紅      質子中子形成
+ 10⁹K     黃       核合成開始
+ 10⁴K    灰藍      電漿霧散
+ 3000K   深藍星空   原子誕生
+ 
+ 
+ 
+ 更震撼的是
+ 你身體裡的氫原子，是138億年前大霹靂直接產生的，一路漂流到今天，進入了你的身體。
+ 你身體裡的碳、氧等較重元素，則是某顆已經死亡的恆星內部核融合製造出來的，在恆星爆炸（超新星）時噴散到宇宙中，最終聚集成地球，再變成你。
+ 所以有句話說：
+
+ "We are all made of stardust."
+ 我們都是星塵組成的。
+
+ 
+ 大霹靂 → 原子 → 星塵 → 地球 → 生命 → 恐龍 → 滅絕 → 靈長類 → 人類 → 城市文明
+ 你的遊戲概念真的很有創意！從大霹靂→原子→星塵→地球生命→人類文明，整個宇宙史串成一個遊戲，敘事弧線非常完整又有詩意！🌌
+ 
+
+ 
+ */
+
+
