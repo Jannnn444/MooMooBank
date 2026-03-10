@@ -36,14 +36,14 @@ struct Atom: Identifiable {
     let id = UUID()
     var taps: Int = 0
     var position: CGPoint
-
+    
     var config: LevelConfig { configForTaps(taps) }
     var level: Int { config.level }
     var size: CGFloat { config.size }
     var color: Color { config.color }
     var label: String { config.label }
     var glowRadius: CGFloat { config.glowRadius }
-
+    
     var tapsToNextLevel: Int? {
         let next = levelConfigs.first(where: { $0.tapsRequired > taps })
         return next.map { $0.tapsRequired - taps }
@@ -54,13 +54,13 @@ struct Atom: Identifiable {
 struct AtomBubble: View {
     let atom: Atom
     let onTap: () -> Void
-
+    
     @State private var offsetY: CGFloat = 0
     @State private var offsetX: CGFloat = 0
     @State private var pulse: Bool = false
     @State private var scale: CGFloat = 1.0
     @State private var showTapCount: Bool = false
-
+    
     var body: some View {
         ZStack {
             // Outer glow ring for high levels
@@ -70,7 +70,7 @@ struct AtomBubble: View {
                     .frame(width: atom.size + 14, height: atom.size + 14)
                     .scaleEffect(pulse ? 1.2 : 0.95)
             }
-
+            
             Circle()
                 .fill(
                     RadialGradient(
@@ -83,12 +83,12 @@ struct AtomBubble: View {
                 .frame(width: atom.size, height: atom.size)
                 .shadow(color: atom.color.opacity(0.7), radius: pulse ? atom.glowRadius * 1.5 : atom.glowRadius)
                 .scaleEffect(pulse ? 1.08 : 1.0)
-
+            
             VStack(spacing: 1) {
                 Text(atom.label)
                     .font(.system(size: max(atom.size * 0.28, 6), weight: .bold, design: .monospaced))
                     .foregroundColor(.white)
-
+                
                 // Tap progress bar
                 if let remaining = atom.tapsToNextLevel {
                     let next = levelConfigs.first(where: { $0.tapsRequired > atom.taps })
@@ -96,7 +96,7 @@ struct AtomBubble: View {
                     let total = (next?.tapsRequired ?? atom.taps) - (prev?.tapsRequired ?? 0)
                     let done = total - remaining
                     let progress = total > 0 ? CGFloat(done) / CGFloat(total) : 1.0
-
+                    
                     ZStack(alignment: .leading) {
                         Capsule()
                             .fill(Color.white.opacity(0.15))
@@ -107,7 +107,7 @@ struct AtomBubble: View {
                     }
                 }
             }
-
+            
             // Tap count popup
             if showTapCount {
                 Text("+1")
@@ -153,7 +153,7 @@ struct EntryView: View {
     @State private var showToast: Bool = false
     
     @State private var isShowLevelMenu: Bool = false
-
+    
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
@@ -180,7 +180,7 @@ struct EntryView: View {
                 }
                 Spacer()
             }
-
+            
             // MARK: - 2. Atoms layer
             if isAtomExploded {
                 GeometryReader { geo in
@@ -192,40 +192,32 @@ struct EntryView: View {
                 }
                 .ignoresSafeArea()
             }
-
+            
             // MARK: - 3. UI overlay
             VStack(spacing: 16) {
-               
-                    Text("Fortune")
-                        .foregroundStyle(.white)
-                        .fontDesign(.monospaced)
-                        .font(.title2)
-                    
-                    Button { spawnAtom() } label: {
-                        Image("coin")
-                            .resizable()
-                            .frame(width: 150, height: 150)
-                    }
-                                       
-                    Text("Tap atoms to grow · Coin to spawn")
-                        .foregroundStyle(.gray)
-                        .fontDesign(.monospaced)
-                        .font(.caption)
                 
-                    
-                    Button {
-                        isShowLevelMenu.toggle()
-                    } label: {
-                        Image("menu")
-                            .resizable()
-                            .frame(width: 15, height: 15)
-                    }.offset(x: 100)
-                    
+                Text("Fortune")
+                    .foregroundStyle(.white)
+                    .fontDesign(.monospaced)
+                    .font(.title2)
+                
+                Button { spawnAtom() } label: {
+                    Image("coin")
+                        .resizable()
+                        .frame(width: 150, height: 150)
+                }
+                
+                Text("Tap atoms to grow · Coin to spawn")
+                    .foregroundStyle(.gray)
+                    .fontDesign(.monospaced)
+                    .font(.caption)
+                
+                
+                // MARK - Divider Display Level
+                Divider().overlay(.gray)
+                
                     if isShowLevelMenu {
-                        // Level legend
-                        
-                        Divider().overlay(.gray)
-     
+                        // Level Legend Display Toggle
                         ScrollView(.horizontal, showsIndicators: false) {
                             HStack(spacing: 12) {
                                 ForEach(levelConfigs, id: \.level) { config in
@@ -244,20 +236,47 @@ struct EntryView: View {
                             }
                             .padding(.horizontal)
                         }
-                        
-                        if showToast {
-                            Text(toastMessage)
-                                .foregroundStyle(.yellow)
-                                .fontDesign(.monospaced)
-                                .font(.caption)
-                                .transition(.opacity.combined(with: .scale))
-                        }
                     }
                 
+                
+                if showToast {
+                    Text(toastMessage)
+                        .foregroundStyle(.yellow)
+                        .fontDesign(.monospaced)
+                        .font(.caption)
+                        .transition(.opacity.combined(with: .scale))
+                }
+                
             }.ignoresSafeArea()
+            
+            // MARK: - Toggle Menu
+            VStack {
+                Spacer()
+                
+                HStack {
+                    Spacer()
+                    Button {
+                        isShowLevelMenu.toggle()
+                    } label: {
+                        ZStack {
+                            Text("")
+                                .padding()
+                                .frame(width: 70, height: 70)
+                                .background(Color.gray.opacity(0.5))
+                                .cornerRadius(12)
+                            
+                            Image("menu")
+                                .resizable()
+                                .frame(width: 50, height: 50)
+                                .padding()
+                        }
+                    }.offset(x: -30)
+                }
+                
+            }
         }
     }
-
+    
     func spawnAtom() {
         // CGFloat restricted area for atom-spawning
         isAtomExploded = true
@@ -275,7 +294,7 @@ struct EntryView: View {
         let oldLevel = atoms[index].level
         atoms[index].taps += 1
         let newLevel = atoms[index].level
-
+        
         if newLevel > oldLevel {
             let isMax = newLevel == levelConfigs.last?.level
             toastMessage = isMax ? "⚡ MAXIMUM POWER!" : "⬆️ Level \(newLevel) reached!"
@@ -297,12 +316,12 @@ struct EntryView: View {
 
 // NOTE:
 /*
-  1. The elements will be created:
-     Hydrogen (H): approximately 75%,
-     Helium (He): approximately 25%,
-     Lithium (Li): trace amounts (roughly one part in ten billion)
+ 1. The elements will be created:
+ Hydrogen (H): approximately 75%,
+ Helium (He): approximately 25%,
+ Lithium (Li): trace amounts (roughly one part in ten billion)
  
-  2. What's the first happening after the big bang
+ 2. What's the first happening after the big bang
  
  
  建議的遊戲流程
@@ -336,15 +355,15 @@ struct EntryView: View {
  你身體裡的氫原子，是138億年前大霹靂直接產生的，一路漂流到今天，進入了你的身體。
  你身體裡的碳、氧等較重元素，則是某顆已經死亡的恆星內部核融合製造出來的，在恆星爆炸（超新星）時噴散到宇宙中，最終聚集成地球，再變成你。
  所以有句話說：
-
+ 
  "We are all made of stardust."
  我們都是星塵組成的。
-
+ 
  
  大霹靂 → 原子 → 星塵 → 地球 → 生命 → 恐龍 → 滅絕 → 靈長類 → 人類 → 城市文明
  你的遊戲概念真的很有創意！從大霹靂→原子→星塵→地球生命→人類文明，整個宇宙史串成一個遊戲，敘事弧線非常完整又有詩意！🌌
  
-
+ 
  
  */
 
