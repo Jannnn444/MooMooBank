@@ -218,6 +218,21 @@ struct EntryView: View {
                 // MARK - Divider Display Level
                 Divider().overlay(.gray)
                 
+                if showToast {
+                    Text(toastMessage)
+                        .foregroundStyle(.yellow)
+                        .fontDesign(.monospaced)
+                        .font(.caption)
+                        .transition(.opacity.combined(with: .scale))
+                }
+                
+            }.ignoresSafeArea()
+            
+            // MARK: - Toggle Menu
+            VStack {
+                Spacer()
+                
+                HStack {
                     if isShowLevelMenu {
                         // Level Legend Display Toggle
                         ScrollView(.horizontal, showsIndicators: false) {
@@ -241,21 +256,7 @@ struct EntryView: View {
                     }
                 
                 
-                if showToast {
-                    Text(toastMessage)
-                        .foregroundStyle(.yellow)
-                        .fontDesign(.monospaced)
-                        .font(.caption)
-                        .transition(.opacity.combined(with: .scale))
-                }
-                
-            }.ignoresSafeArea()
-            
-            // MARK: - Toggle Menu
-            VStack {
-                Spacer()
-                
-                HStack {
+                    
                     Spacer()
                     Button {
                         isShowLevelMenu.toggle()
