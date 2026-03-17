@@ -17,14 +17,14 @@ struct LevelConfig {
 }
 
 let levelConfigs: [LevelConfig] = [
-    LevelConfig(level: 1, tapsRequired: 0,   size: 14, color: .cyan,   label: "I",   glowRadius: 4),
-    LevelConfig(level: 2, tapsRequired: 5,   size: 15, color: .green,  label: "II",  glowRadius: 6),
-    LevelConfig(level: 3, tapsRequired: 10,  size: 16, color: .yellow, label: "III", glowRadius: 8),
-    LevelConfig(level: 4, tapsRequired: 30,  size: 17, color: .orange, label: "IV",  glowRadius: 10),
-    LevelConfig(level: 5, tapsRequired: 50,  size: 25, color: .red,    label: "V",   glowRadius: 13),
-    LevelConfig(level: 6, tapsRequired: 100, size: 30, color: .purple, label: "VI",  glowRadius: 15),
-    LevelConfig(level: 7, tapsRequired: 200, size: 40, color: .pink,   label: "VII", glowRadius: 20),
-    LevelConfig(level: 8, tapsRequired: 500, size: 50, color: .white,  label: "MAX", glowRadius: 28),
+    LevelConfig(level: 1, tapsRequired: 0,   size: 14, color: .yellow,   label: "",   glowRadius: 4),
+    LevelConfig(level: 2, tapsRequired: 5,   size: 15, color: .green,  label: "",  glowRadius: 6),
+    LevelConfig(level: 3, tapsRequired: 10,  size: 16, color: .yellow, label: "", glowRadius: 8),
+    LevelConfig(level: 4, tapsRequired: 30,  size: 17, color: .orange, label: "",  glowRadius: 10),
+    LevelConfig(level: 5, tapsRequired: 50,  size: 25, color: .red,    label: "",   glowRadius: 13),
+    LevelConfig(level: 6, tapsRequired: 100, size: 30, color: .purple, label: "",  glowRadius: 15),
+    LevelConfig(level: 7, tapsRequired: 200, size: 40, color: .pink,   label: "", glowRadius: 20),
+    LevelConfig(level: 8, tapsRequired: 500, size: 50, color: .white,  label: "", glowRadius: 28),
 ]
 
 func configForTaps(_ taps: Int) -> LevelConfig {
@@ -120,6 +120,7 @@ struct AtomBubble: View {
                     ))
             }
         }
+        .ignoresSafeArea()
         .scaleEffect(scale)
         .offset(x: offsetX, y: offsetY)                          // ✅ applies float drift
         .position(x: atom.position.x, y: atom.position.y)        // ✅ places atom on screen
@@ -153,13 +154,13 @@ struct EntryView: View {
     @State private var showToast: Bool = false
     
     @State private var isShowLevelMenu: Bool = false
+    @State private var isFirstTapped: Bool = false
     
     var body: some View {
         ZStack {
             Color.black.ignoresSafeArea()
             
-            // MARK: - 1. Atom top-left counter reception
-            
+            // MARK: - 1. Atom top-left bar counter reception
             VStack {
                 HStack {
                     HStack(spacing: 6) {
@@ -181,6 +182,15 @@ struct EntryView: View {
                 Spacer()
             }
             
+            
+            Button {
+                spawnAtom()
+            } label: {
+                Image("coin")
+                    .resizable()
+                    .frame(width: 150, height: 150)
+            }
+            
             // MARK: - 2. Atoms layer
             if isAtomExploded {
                 GeometryReader { geo in
@@ -193,30 +203,29 @@ struct EntryView: View {
                 .ignoresSafeArea()
             }
             
-            // MARK: - 3. UI overlay
-            VStack(spacing: 16) {
+            if isFirstTapped == false {
+                // MARK: - 3. Greeting text overlay
+                VStack(spacing: 16) {
+                    Text("Fortune")
+                        .foregroundStyle(.white)
+                        .fontDesign(.monospaced)
+                        .font(.title2)
+                    
+                    Text("Tap atoms to grow · Coin to spawn")
+                        .foregroundStyle(.gray)
+                        .fontDesign(.monospaced)
+                        .font(.caption)
+                    
+                    
+                    // MARK - Divider Display Level
+                    Divider().overlay(.gray)
                 
-                Text("Fortune")
-                    .foregroundStyle(.white)
-                    .fontDesign(.monospaced)
-                    .font(.title2)
-                
-                Button {
-                    spawnAtom()
-                } label: {
-                    Image("coin")
-                        .resizable()
-                        .frame(width: 150, height: 150)
-                }
-                
-                Text("Tap atoms to grow · Coin to spawn")
-                    .foregroundStyle(.gray)
-                    .fontDesign(.monospaced)
-                    .font(.caption)
-                
-                
-                // MARK - Divider Display Level
-                Divider().overlay(.gray)
+            }
+        }
+            
+            // MARK: - Toggle Menu
+            VStack {
+                Spacer()
                 
                 if showToast {
                     Text(toastMessage)
@@ -225,12 +234,6 @@ struct EntryView: View {
                         .font(.caption)
                         .transition(.opacity.combined(with: .scale))
                 }
-                
-            }.ignoresSafeArea()
-            
-            // MARK: - Toggle Menu
-            VStack {
-                Spacer()
                 
                 HStack {
                     if isShowLevelMenu {
@@ -275,13 +278,13 @@ struct EntryView: View {
                         }
                     }.offset(x: -30)
                 }
-                
-            }
-        }
+            }.ignoresSafeArea()
+        }.ignoresSafeArea()
     }
     
     func spawnAtom() {
         // CGFloat restricted area for atom-spawning
+        isFirstTapped = true
         isAtomExploded = true
         let screen = UIScreen.main.bounds // full screen
         let atom = Atom(position: CGPoint(
