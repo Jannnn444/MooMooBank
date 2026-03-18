@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct LevelConfig {
     let level: Int
@@ -282,18 +283,52 @@ struct EntryView: View {
         }.ignoresSafeArea()
     }
     
+//    func spawnAtom() {
+//        // CGFloat restricted area for atom-spawning
+//        isFirstTapped = true
+//        isAtomExploded = true
+//        let screen = UIScreen.main.bounds // full screen
+//        let atom = Atom(position: CGPoint(
+//            x: CGFloat.random(in: 40...(screen.width - 40)),
+//            y: CGFloat.random(in: 60...(screen.height - 60))
+//        ))
+//        withAnimation(.spring()) { atoms.append(atom) }
+//    }
     func spawnAtom() {
-        // CGFloat restricted area for atom-spawning
         isFirstTapped = true
         isAtomExploded = true
-        let screen = UIScreen.main.bounds // full screen
-        let atom = Atom(position: CGPoint(
-            x: CGFloat.random(in: 40...(screen.width - 40)),
-            y: CGFloat.random(in: 60...(screen.height - 60))
-        ))
+
+        let screen = UIScreen.main.bounds
+        let cols = 3
+        let rows = 4
+//        let padding: CGFloat = 50 no need this
+
+        let cellW = (screen.width  ) / CGFloat(cols)
+        let cellH = (screen.height ) / CGFloat(rows)
+
+        // Count how many atoms are already in each zone
+        var zoneCounts = Array(repeating: 0, count: cols * rows)
+        for atom in atoms {
+            let col = Int((atom.position.x ) / cellW).clampedTo(0...(cols - 1))
+            let row = Int((atom.position.y ) / cellH).clampedTo(0...(rows - 1))
+            zoneCounts[row * cols + col] += 1
+        }
+
+        // Pick the zone with fewest atoms (ties broken randomly)
+        let minCount = zoneCounts.min() ?? 0
+        let candidates = zoneCounts.indices.filter { zoneCounts[$0] == minCount }
+        let chosen = candidates.randomElement()!
+
+        let chosenRow = chosen / cols
+        let chosenCol = chosen % cols
+
+        // Place atom randomly within that zone
+        let x = padding + CGFloat(chosenCol) * cellW + CGFloat.random(in: 10...(cellW - 10))
+        let y = padding + CGFloat(chosenRow) * cellH + CGFloat.random(in: 10...(cellH - 10))
+
+        let atom = Atom(position: CGPoint(x: x, y: y))
         withAnimation(.spring()) { atoms.append(atom) }
     }
-    
     
     func tapAtom(id: UUID) {
         guard let index = atoms.firstIndex(where: { $0.id == id }) else { return }
@@ -312,6 +347,11 @@ struct EntryView: View {
     }
 }
 
+extension Int {
+    func clampedTo(_ range: ClosedRange<Int>) -> Int {
+        Swift.min(Swift.max(self, range.lowerBound), range.upperBound)
+    }
+}
 
 // spontaneuos help card -> CAUTION! This will really change your game totally
 // it's by chance to get help by alien?
