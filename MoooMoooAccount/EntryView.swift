@@ -321,10 +321,12 @@ struct EntryView: View {
 
         let chosenRow = chosen / cols
         let chosenCol = chosen % cols
-
-        // Place atom randomly within that zone
-        let x = padding + CGFloat(chosenCol) * cellW + CGFloat.random(in: 10...(cellW - 10))
-        let y = padding + CGFloat(chosenRow) * cellH + CGFloat.random(in: 10...(cellH - 10))
+        
+        let randX = CGFloat.random(in: 10...(cellW - 10))
+        let randY = CGFloat.random(in: 10...(cellH - 10))
+        let x =  CGFloat(chosenCol) * cellW + randX
+        let y =  CGFloat(chosenRow) * cellH + randY
+        
 
         let atom = Atom(position: CGPoint(x: x, y: y))
         withAnimation(.spring()) { atoms.append(atom) }
